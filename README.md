@@ -30,8 +30,8 @@ Estimate of time needed to complete: 5
 
 Start time: 1:20
 
-Finish time: 6:20
-Actual time needed to complete: 5
+Finish time: 1:20
+Actual time needed to complete: 12
 
 
 
