@@ -10,6 +10,13 @@ class App extends React.Component {
       latitude:'',
       longitude:'',
       name:'',
+      dates1: '',
+      dates2: '',
+      dates3: '',
+      description1:'',
+      description2:'',
+      description3:'',
+
       value:false,
       displayError:false
     }
@@ -19,12 +26,23 @@ class App extends React.Component {
     event.preventDefault();
     const cityName = event.target.cityName.value;
     const URL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION}&q=${cityName}&format=json`;
+    const urlHerocu = `https://city-lap7.herokuapp.com/weather?city=${cityName}`
     try 
     {
+      
       let resResult = await axios.get(URL);
+      const jasonData = await axios.get(urlHerocu);
+      console.log(jasonData.data);
       this.setState({
+        dates1:jasonData.data[0].date,
+        dates2:jasonData.data[1].date,
+        dates3:jasonData.data[2].date,
+        description1:jasonData.data[0].description,
+        description2:jasonData.data[1].description,
+        description3:jasonData.data[2].description,
+
         latitude:resResult.data[0].lat,
-      longitude:resResult.data[0].lon,
+        longitude:resResult.data[0].lon,
         name:resResult.data[0].display_name,
         value:true
       })
@@ -33,8 +51,10 @@ class App extends React.Component {
     {
       this.setState({
         displayError:true
+        
       })
     }
+    console.log(this.state.description);
 
   }
   
@@ -54,6 +74,13 @@ class App extends React.Component {
 
       {this.state.value && 
       <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION}&center=${this.state.latitude},${this.state.longitude}&zoom=[1-18]`} alt='map' />}
+      <p>{this.state.dates1}</p>
+      <p>{this.state.dates2}</p>
+      <p>{this.state.dates3}</p>
+
+      <p>{this.state.description1}</p>
+      <p>{this.state.description2}</p>
+      <p>{this.state.description3}</p>
 
       {this.state.displayError && <p>Error</p>}
       
