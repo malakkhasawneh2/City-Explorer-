@@ -1,6 +1,7 @@
 import './App.css';
 import axios from 'axios';
 import React from 'react';
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends React.Component {
 
@@ -11,7 +12,7 @@ class App extends React.Component {
       lon: '',
       display_name: '',
       displayError: false,
-      weatherFlag: false,
+      weather: false,
       disPlayWeatherError: false,
       weatherArray: [],
       mapDisplay: false,
@@ -21,11 +22,14 @@ class App extends React.Component {
   getWeatherData = async (lat,lon) => {
     let WeatherURL = `https://city-lap7.herokuapp.com/weather?lat=${lat}&lon=${lon}`;
 
+
   try {
       let WeatherData = await axios.get(WeatherURL)
         this.setState({
           weatherArray: WeatherData.data,
+          weather:true
         })
+        console.log(this.state.weatherArray);
     }
     catch {
       this.setState({
@@ -37,7 +41,7 @@ class App extends React.Component {
   getCityData = async (event) => {
     event.preventDefault();
     let cityName = event.target.cityName.value;
-    this.getWeatherData(cityName);
+    // this.getWeatherData(cityName);
     let URL = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION}&q=${cityName}&format=json`;
 
     try {
@@ -49,7 +53,7 @@ class App extends React.Component {
         mapDisplay: true
 
       })
-      this.getWeatherData(this.state.lat,this.state.lon)
+      this.getWeatherData(Data.data[0].lat,Data.data[0].lon)
     }
     catch {
       this.setState({
@@ -68,17 +72,17 @@ class App extends React.Component {
         <>
 
         <h1>City Location</h1>
-        <form onSubmit={this.location}>
+        <form onSubmit={this.getCityData}>
           <input type='text' name='cityName' placeholder='Enter city name' />
           <button type='submit'>Location</button>
         </form>
         <p>City name:{this.state.display_name}</p>
         <p>Latitude:{this.state.lat}</p>
         <p>Longitude:{this.state.lon}</p>
-         {this.state.value &&
-         <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION}&center=${this.state.latitude},${this.state.longitude}&zoom=[1-18]`} alt='map' />}
+         {this.state.mapDisplay &&
+         <img src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION}&center=${this.state.lat},${this.state.lon}&zoom=${1-18}`} alt='map' />}
         {this.state.disPlayError && <p>something Error</p>}
-        {this.state.weatherFlag && this.state.weatherArray.map(item =>{
+        {this.state.weather && this.state.weatherArray.map(item =>{
           return(
           <>
            <p>Date: {item.date}</p>
@@ -87,7 +91,7 @@ class App extends React.Component {
 
 )
 })}
-        
+    {this.state.disPlayWeatherError&&<p >something Error</p>}    
       </>
     );
   }
