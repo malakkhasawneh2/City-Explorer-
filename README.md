@@ -13,7 +13,7 @@ after creat react app we should installing it in computar thin go on location to
 
 ## Change Log
 
-09-05-2021 6:50pm - Application now has a fully-functional express server, with a GET route for the location resource. 
+09-09-2021 4:50pm - Application now has a fully-functional express server, with a GET route for the location resource. 
 
 ## Credit and Collaborations
 malak amd aseel
@@ -21,6 +21,8 @@ axios
 library 
 nitlfay
 trillo
+herocu
+movie&weather API
 
 
 
